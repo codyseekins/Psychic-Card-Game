@@ -58,6 +58,8 @@ class Player:
         #percent of correct guesses:
         self.percent_correct = 0
         self.statistical_average_correct = 0
+        
+        
 
     #Player Methods Below:
 
@@ -118,12 +120,17 @@ class Player:
             #calculates percent of correct answers
             self.percent_correct = round((self.correct_answers / self.total_guesses) * 100, 2)
 
-            #calculates statistical percent of correct answers
-            self.statistical_average_correct = round((1 / self.list) * self.total_guesses, 2)
+            #calculates statistical percent of correct answers likely from given list length
+            self.statistical_average_correct = round((1 / self.list) *100, 2)
+            
+            #calculates likely amount of correct guesses based on chance alone for any given amount of guesses
+            self.random_guess_number = ((self.statistical_average_correct / 100) * self.total_guesses)/ 5
 
+            #calculates random average statistical percentage of correct answers given number of guesses
+            self.random_average_percentage = (self.random_guess_number / self.total_guesses) * 100
             #prints out percent correct vs. statistical correct answers 
-            print("Your percent correct is: ", self.percent_correct)
-            print("Correct answers by chance?", self.statistical_average_correct)
+            print("Your percent of answers correct is: ", self.percent_correct)
+            print("Number of answers correct by chance?", self.statistical_average_correct / 100)
             print("list length test:", self.list)
 
             #if player has made a guess
@@ -143,12 +150,15 @@ class Player:
                 print("Total Guesses: ", self.total_guesses)
                 print("Total Correct: ", self.correct_answers)
                 print("Your percent correct: ", self.percent_correct)
-                print("Statistical correct answers by chance: ", self.statistical_average_correct)
+                print("self.statistical_average_correct value:", self.statistical_average_correct)
+                
                 #if performed worse or better than chance, give result
                 if(self.percent_correct > self.statistical_average_correct):
-                    print("You performed ", round(self.percent_correct - self.statistical_average_correct, 2),  "\%\ better than chance alone!")
+                    print("You are positively psychic!!! You performed ", round(self.percent_correct - self.statistical_average_correct, 2),  "percent better than chance alone!")
                 elif(self.percent_correct < self.statistical_average_correct):
-                    print("You peformed ", round(self.statistical_average_correct - self.percent_correct), 2)
+                    print("You are negatively psychic!!! You performed ", round(self.statistical_average_correct - self.percent_correct, 2), "percent worse than chance alone!")
+                elif(int(self.percent_correct) == int(self.statistical_average_correct)):
+                    print("You are not psychic at all!!!  You performed the same as chance alone.")
                 break
             else:
                 print("Choose Y/N: " )
