@@ -43,7 +43,7 @@ class Player:
         #will determine choice to continue or quit
         self.try_again = ""
         #announces player instance:
-        print("Player {} entered the room".format(self.name))
+        print("Player {} enters the room!".format(self.name))
         #Has the player made a guess?
         self.made_a_guess = False
         #mystery card to be guessed:
@@ -113,7 +113,7 @@ class Player:
                 
             else:
                 #validates wrong answer
-                print("Nice Try, " + self.name + " But No Cigar!  The correct answer is:  ", self.mystery_card)
+                print("Nice Try, " + self.name + " But the correct answer is:  ", self.mystery_card)
                 #adds wrong answer to wrong answers by player instance
                 self.wrong_answers += 1
 
@@ -131,7 +131,7 @@ class Player:
             #prints out percent correct vs. statistical correct answers 
             print("Your percent of answers correct is: ", self.percent_correct)
             print("Number of answers correct by chance?", self.statistical_average_correct / 100)
-            print("list length test:", self.list)
+            
 
             #if player has made a guess
             if(self.made_a_guess):
@@ -146,17 +146,20 @@ class Player:
                 self.guess_card()
             #if player chooses to quit
             elif(self.try_again.upper() == "N"):
-                print("Great effort!  Thanks for playing, " + self.name, " Here are your final stats: ")
-                print("Total Guesses: ", self.total_guesses)
-                print("Total Correct: ", self.correct_answers)
+                print("*********************************************************************************")
+                print("*********************************************************************************")
+                print("Great effort!  Thanks for playing, " + self.name + "! Here are your final stats: ")
+                print("- - - - - - - - - - - - - - - - - - -")
+                print("Total Guesses: ", self.total_guesses, " Total Correct: ", self.correct_answers)
+                print("- - - - - - - - - - - - - - - - - - -")
                 print("Your percent correct: ", self.percent_correct)
-                print("self.statistical_average_correct value:", self.statistical_average_correct)
+                print("Percent if pure chance:", self.statistical_average_correct)
                 
                 #if performed worse or better than chance, give result
                 if(self.percent_correct > self.statistical_average_correct):
-                    print("You are positively psychic!!! You performed ", round(self.percent_correct - self.statistical_average_correct, 2),  "percent better than chance alone!")
+                    print("You are positively psychic!!! You performed", round(self.percent_correct - self.statistical_average_correct, 2),  "percent better than chance alone!")
                 elif(self.percent_correct < self.statistical_average_correct):
-                    print("You are negatively psychic!!! You performed ", round(self.statistical_average_correct - self.percent_correct, 2), "percent worse than chance alone!")
+                    print("You are negatively psychic!!! You performed", round(self.statistical_average_correct - self.percent_correct, 2), "percent worse than chance alone!")
                 elif(int(self.percent_correct) == int(self.statistical_average_correct)):
                     print("You are not psychic at all!!!  You performed the same as chance alone.")
                 break
@@ -171,7 +174,7 @@ class Player:
         return rep
     
 #instance of player class, asks for name
-new_player1 = Player(str(input("What is your name?")))
+new_player1 = Player(str(input("What is your name? ")))
 
 #new player instance draws a card
 new_player1.draw_card()
