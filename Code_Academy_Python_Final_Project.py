@@ -6,6 +6,7 @@ class Card:
     def __init__(self):
         #types of card symbols
         card_list = ["Star", "Circle", "Square", "3 Wavy Lines", "Cross"]
+        self.card_list_length = len(card_list)
         #is the card face up?
         self.is_face_up = False
         self.cards = card_list
@@ -21,6 +22,10 @@ class Card:
         print("Card Drawn.  Can you guess it?")
         return self.random_card
     
+    #returns the Card card_list 
+    def card_list(self):
+        return self.card_list_length
+    
     #representation function describing instance of Card
     def __repr__(self):
         rep = "New Card Drawn. Card symbol is {}.".format(self.random_card)
@@ -32,7 +37,10 @@ class Player:
     #Player Attributes for class instance
     def __init__(self,name):
         self.name = name
+        self.list = []
+        #will assign name
         self.user_input = ""
+        #will determine choice to continue or quit
         self.try_again = ""
         #announces player instance:
         print("Player {} entered the room".format(self.name))
@@ -42,7 +50,7 @@ class Player:
         self.mystery_card = ""
         self.real_card = ""
         #number of correct answers:
-        self.score = 0
+        self.correct_answers = 0
         #number of wrong ansers:
         self.wrong_answers = 0
         #total guesses:
@@ -57,9 +65,10 @@ class Player:
     def draw_card(self):
         #instance of Card class:
         self.real_card = Card()
+        self.list = self.real_card.card_list_length
         #player instance draws mystery card from Card class and stores it as a value in Player class
         self.mystery_card = self.real_card.draw_card()
-        return self.mystery_card
+        return self.mystery_card, self.list
     
     #guessing a card function
     def guess_card(self):
@@ -99,7 +108,7 @@ class Player:
                 print(self.name + ", you got it right!!!")
                 #adds correct answer to correct answers by player instance
                 self.correct_answers += 1
-                self.score += 1
+                
             else:
                 #validates wrong answer
                 print("Nice Try, " + self.name + " But No Cigar!  The correct answer is:  ", self.mystery_card)
@@ -110,11 +119,12 @@ class Player:
             self.percent_correct = round((self.correct_answers / self.total_guesses) * 100, 2)
 
             #calculates statistical percent of correct answers
-            self.statistical_average_correct = round((len(Card.card_list) / self.total_guesses) *100, 2)
+            self.statistical_average_correct = round((1 / self.list) * self.total_guesses, 2)
 
             #prints out percent correct vs. statistical correct answers 
             print("Your percent correct is: ", self.percent_correct)
             print("Correct answers by chance?", self.statistical_average_correct)
+            print("list length test:", self.list)
 
             #if player has made a guess
             if(self.made_a_guess):
@@ -131,14 +141,35 @@ class Player:
             elif(self.try_again.upper() == "N"):
                 print("Great effort!  Thanks for playing, " + self.name, " Here are your final stats: ")
                 print("Total Guesses: ", self.total_guesses)
-                print("Total Correct: ", self.score)
+                print("Total Correct: ", self.correct_answers)
                 print("Your percent correct: ", self.percent_correct)
                 print("Statistical correct answers by chance: ", self.statistical_average_correct)
                 #if performed worse or better than chance, give result
                 if(self.percent_correct > self.statistical_average_correct):
-                    print("You performed " + str(round(self.percent_correct - self.statistical_average_correct), 2) + "\%\ better than chance alone!")
+                    print("You performed ", round(self.percent_correct - self.statistical_average_correct, 2),  "\%\ better than chance alone!")
                 elif(self.percent_correct < self.statistical_average_correct):
-                    print("You peformed " + str(round(self.statistical_average_correct - self.percent_correct), 2))
+                    print("You peformed ", round(self.statistical_average_correct - self.percent_correct), 2)
+                break
+            else:
+                print("Choose Y/N: " )
+                continue
+            return self.guess
+    
+    #player object representation function
+    def __repr__(self):
+        rep = "Player named {}, who has made {} guesses, with {} correct.".format(self.name, self.total_guesses, self.percent_correct)
+        return rep
+    
+#instance of player class, asks for name
+new_player1 = Player(str(input("What is your name?")))
+
+#new player instance draws a card
+new_player1.draw_card()
+
+#new player guesses card
+new_player1.guess_card()
+
+
 
 
 
