@@ -5,4 +5,4 @@ Game can be run as a new game or from a saved profile.  Application currently on
 
 Random card symbols are drawn, and player guesses them.  The application aggregates each guess and compares it to chance.
 
-Built in Python 3.10
+Built in Python 3.10 primarily within Visual Studio Code.
