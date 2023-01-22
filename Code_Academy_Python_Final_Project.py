@@ -1,4 +1,11 @@
 import random
+import os
+import pickle
+os.system("cls")
+
+new_game = False
+try_again = False
+
 #Card class
 class Card:
 
@@ -140,6 +147,9 @@ class Player:
 
             #if player chooses to try again
             if(self.try_again.upper() == "Y"):
+                os.system("cls")
+                new_game = False
+                try_again = True
                 #draw a different card
                 self.draw_card()
                 #initiate another guess
@@ -154,33 +164,74 @@ class Player:
                 print("- - - - - - - - - - - - - - - - - - -")
                 print("Your percent correct: ", self.percent_correct)
                 print("Percent if pure chance:", self.statistical_average_correct)
-                
+                new_game = True
+                try_again = False
+                #save player instance
+                with open("players.dat", "wb") as file:
+                    pickle.dump(player, file)
+
                 #if performed worse or better than chance, give result
                 if(self.percent_correct > self.statistical_average_correct):
-                    print("You are positively psychic!!! You performed", round(self.percent_correct - self.statistical_average_correct, 2),  "percent better than chance alone!")
+                    print("You seem positively psychic!!! You performed", round(self.percent_correct - self.statistical_average_correct, 2),  "percent better than chance alone!")
                 elif(self.percent_correct < self.statistical_average_correct):
-                    print("You are negatively psychic!!! You performed", round(self.statistical_average_correct - self.percent_correct, 2), "percent worse than chance alone!")
+                    print("You seem negatively psychic!!! You performed", round(self.statistical_average_correct - self.percent_correct, 2), "percent worse than chance alone!")
                 elif(int(self.percent_correct) == int(self.statistical_average_correct)):
-                    print("You are not psychic at all!!!  You performed the same as chance alone.")
+                    print("I guess you are not psychic at all!!!  You performed the same as chance alone.")
                 break
             else:
                 print("Choose Y/N: " )
                 continue
-            return self.guess
+            return self.guess, new_game, try_again
     
     #player object representation function
     def __repr__(self):
         rep = "Player named {}, who has made {} guesses, with {} correct.".format(self.name, self.total_guesses, self.percent_correct)
         return rep
-    
-#instance of player class, asks for name
-new_player1 = Player(str(input("What is your name? ")))
 
-#new player instance draws a card
-new_player1.draw_card()
+#load saved player instance if any
+with open("players.dat", "rb") as file2:
+    player_instance = pickle.load(file2)
 
-#new player guesses card
-new_player1.guess_card()
+
+
+#while loop to check for choice of new or saved game
+bot = True
+while bot == True:
+    #ask if player wants new game or saved
+    player_mode = input(str("A. for new game  B. for saved game  |  "))
+    try:
+        if player_mode.upper() == "A":
+            new_game = True
+            try_again = False
+            bot = False
+            break
+        elif player_mode.upper() == "B":
+            new_game = False
+            try_again = False
+            bot = False
+            break
+    except:
+        print("Try again, but choose A. or B.")
+
+#initializes player instance if new or from saved file
+if new_game == True and try_again == False:
+    #instance of new player class, asks for name
+    player = Player(str(input("What is your name? ")))
+
+    #new player instance draws a card
+    player.draw_card()
+
+    #new player guesses card
+    player.guess_card()
+else:
+    #creates instance of player from file
+    player = player_instance
+    print("Welcome back, " + player.name + "! :-)")
+    #player draws a card
+    player.draw_card()
+    #player made to guess card
+    player.guess_card()
+
 
 
 
