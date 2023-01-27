@@ -29,7 +29,7 @@ class Card:
         print("Card Drawn.  Can you guess it?")
         return self.random_card
     
-    #returns the Card card_list 
+    #returns the Card card_list length
     def card_list(self):
         return self.card_list_length
     
@@ -44,6 +44,7 @@ class Player:
     #Player Attributes for class instance
     def __init__(self,name):
         self.name = name
+        #will store card list length from Card class
         self.list = []
         #will assign name
         self.user_input = ""
@@ -55,6 +56,7 @@ class Player:
         self.made_a_guess = False
         #mystery card to be guessed:
         self.mystery_card = ""
+        #will be assigned as an instance of Card class
         self.real_card = ""
         #number of correct answers:
         self.correct_answers = 0
@@ -77,6 +79,7 @@ class Player:
         self.list = self.real_card.card_list_length
         #player instance draws mystery card from Card class and stores it as a value in Player class
         self.mystery_card = self.real_card.draw_card()
+        #returns mystery_card value and card list length
         return self.mystery_card, self.list
     
     #guessing a card function
@@ -115,13 +118,13 @@ class Player:
             if(self.guess == self.mystery_card):
                 #validates correct answer
                 print(self.name + ", you got it right!!!")
-                #adds correct answer to correct answers by player instance
+                #adds correct answer to correct answers total by player instance
                 self.correct_answers += 1
                 
             else:
                 #validates wrong answer
                 print("Nice Try, " + self.name + " But the correct answer is:  ", self.mystery_card)
-                #adds wrong answer to wrong answers by player instance
+                #adds wrong answer to wrong answers total by player instance
                 self.wrong_answers += 1
 
             #calculates percent of correct answers
@@ -137,7 +140,7 @@ class Player:
             self.random_average_percentage = (self.random_guess_number / self.total_guesses) * 100
             #prints out percent correct vs. statistical correct answers 
             print("Your percent of answers correct is: ", self.percent_correct)
-            print("Number of answers correct by chance?", self.statistical_average_correct / 100)
+            
             
 
             #if player has made a guess
