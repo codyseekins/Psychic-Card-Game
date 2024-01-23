@@ -191,13 +191,14 @@ class Player:
         rep = "Player named {}, who has made {} guesses, with {} correct.".format(self.name, self.total_guesses, self.percent_correct)
         return rep
 
+# Set the working directory to the script's directory
+script_directory = os.path.dirname(os.path.realpath(__file__))
+os.chdir(script_directory)
+()
+
 #load saved player instance if any
-
-with open("players.dat", "rb") as file2:
-    player_instance = pickle.load(file2)
-    
-
-
+with open('players.dat', 'rb') as file2:
+   player_instance = pickle.load(file2)    
 
 
 #while loop to check for choice of new or saved game
